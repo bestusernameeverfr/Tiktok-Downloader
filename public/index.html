@@ -3,21 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok // Terminal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@700&display=swap" rel="stylesheet">
+    <title>TikTok Arcade - Downloader</title>
+    <!-- Importing a classic retro pixel font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-deep: #0a0a0c;
-            --bg-panel: #141419;
-            --neon-cyan: #00f2ea; /* TikTok Cyan */
-            --neon-pink: #ff0050; /* TikTok Pink */
-            --text-main: #ffffff;
-            --text-muted: #8b9bb4;
-            --border-color: #2a2a36;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -25,229 +14,169 @@
         }
 
         body {
-            background-color: var(--bg-deep);
-            /* Cool futuristic grid pattern */
+            background-color: #0d0b1e;
+            /* Retro pixel grid background */
             background-image: 
-                linear-gradient(0deg, rgba(30, 30, 40, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(30, 30, 40, 0.2) 1px, transparent 1px);
-            background-size: 50px 50px;
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace; /* Monospace for hacker feel */
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #ffffff;
+            font-family: 'Press Start 2P', monospace;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
-            overflow: hidden;
         }
 
-        /* Adding a subtle animated background light */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--neon-cyan);
-            filter: blur(150px);
-            opacity: 0.05;
-            border-radius: 50%;
-            z-index: -1;
-            animation: pulse 6s infinite alternate;
-        }
-
-        .main-container {
+        .arcade-cabinet {
+            background: #1b1638;
+            border: 4px solid #ffcc00;
+            box-shadow: 0 0 0 4px #0d0b1e, 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.5);
+            padding: 30px 20px;
             width: 100%;
-            max-width: 420px;
-            position: relative;
-        }
-
-        /* "Glass" panel */
-        .cyber-panel {
-            background: rgba(20, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Scanline effect overlay */
-        .cyber-panel::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .header {
+            max-width: 440px;
             text-align: center;
-            margin-bottom: 30px;
+            position: relative;
+        }
+
+        /* Top arcade marquee badge */
+        .marquee {
+            background: #ff0055;
+            border: 2px solid #fff;
+            color: #fff;
+            font-size: 10px;
+            padding: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 0 #990033;
         }
 
         h1 {
-            font-family: 'Inter', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--neon-cyan), #ffffff, var(--neon-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 16px;
+            color: #00ffcc;
+            text-shadow: 3px 3px 0px #ff0055;
             margin-bottom: 10px;
+            line-height: 1.4;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-
-        .input-container {
-            position: relative;
+        .score-text {
+            font-size: 8px;
+            color: #ffcc00;
             margin-bottom: 25px;
         }
 
-        /* Decorative corner */
-        .input-container::before {
-            content: '';
-            position: absolute;
-            top: -5px; left: -5px;
-            width: 10px; height: 10px;
-            border-top: 2px solid var(--neon-cyan);
-            border-left: 2px solid var(--neon-cyan);
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 8px;
+            color: #a7a2cb;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            border-radius: 6px;
+            background: #0d0b1e;
+            border: 3px solid #5d5396;
+            color: #00ffcc;
+            padding: 14px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
             outline: none;
-            transition: all 0.3s ease;
+            box-shadow: inset 2px 2px 0px #000;
         }
 
         input:focus {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 242, 234, 0.2);
+            border-color: #00ffcc;
         }
 
         input::placeholder {
-            color: #3a3a4a;
+            color: #3b3368;
+            font-size: 8px;
         }
 
+        /* Chunky 3D Arcade Button */
         button {
             width: 100%;
+            background: #ffcc00;
             border: none;
-            border-radius: 6px;
-            padding: 18px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            /* Neon gradient button */
-            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
-            background-size: 200% 100%;
-            color: #000; /* Black text for contrast */
+            border-bottom: 6px solid #b38f00;
+            color: #1b1638;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 11px;
+            padding: 16px;
             cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 1;
+            text-transform: uppercase;
+            box-shadow: 0 4px 0 #0d0b1e;
+            transition: all 0.1s ease;
+            margin-top: 10px;
         }
 
         button:hover {
-            background-position: 100% 0;
-            box-shadow: 0 0 25px rgba(255, 0, 80, 0.6);
+            background: #ffdd33;
         }
 
         button:active {
-            transform: translateY(1px);
+            transform: translateY(4px);
+            border-bottom-width: 2px;
+            box-shadow: 0 1px 0 #0d0b1e;
         }
 
         #status {
             margin-top: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--neon-cyan);
-            min-height: 18px;
-            text-shadow: 0 0 5px var(--neon-cyan);
+            font-size: 8px;
+            color: #ff0055;
+            min-height: 20px;
+            line-height: 1.5;
         }
 
-        /* Animation keyframes */
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.05; }
-            100% { transform: scale(1.2); opacity: 0.1; }
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 480px) {
-            .cyber-panel { padding: 30px; }
-            h1 { font-size: 22px; }
+        .credits {
+            margin-top: 25px;
+            font-size: 7px;
+            color: #5d5396;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <div class="cyber-panel">
-            <div class="header">
-                <h1>TikTok <span style="color: var(--neon-cyan)">//</span> DL</h1>
-                <div class="subtitle">NEON DECODER UNIT</div>
-            </div>
-            
-            <div class="input-container">
-                <input type="text" id="urlInput" placeholder="PASTE TIKTOK URL HERE...">
-            </div>
-            
-            <button onclick="triggerDownload()">Initialize Download</button>
-            <p id="status"></p>
+    <div class="arcade-cabinet">
+        <div class="marquee">★ INSERT LINK TO PLAY ★</div>
+        
+        <h1>TikTok<br>Downloader</h1>
+        <div class="score-text">HIGH SCORE: 9999</div>
+
+        <div class="input-group">
+            <label>&gt; Paste URL:</label>
+            <input type="text" id="urlInput" placeholder="https://tiktok.com/...">
         </div>
+
+        <button onclick="triggerDownload()">GET MP4</button>
+        <p id="status"></p>
+
+        <div class="credits">1 PLAYER TOKEN = FREE</div>
     </div>
 
     <script>
         function triggerDownload() {
             const urlInput = document.getElementById('urlInput').value.trim();
             const status = document.getElementById('status');
-            const btn = document.querySelector('button');
 
             if (!urlInput) {
-                status.innerText = "> ERROR: NO URL DETECTED";
-                status.style.color = "var(--neon-pink)";
-                status.style.textShadow = "0 0 5px var(--neon-pink)";
+                status.innerText = "ERROR: NO URL DETECTED!";
                 return;
             }
 
-            status.innerText = "> STATUS: ACQUIRING STREAM...";
-            status.style.color = "var(--neon-cyan)";
-            btn.innerText = "Processing...";
-            btn.disabled = true;
+            status.innerText = "LOADING STAGE... PLEASE WAIT.";
+            status.style.color = "#00ffcc";
 
-            // Redirect to start download
             window.location.href = `/api/download-get?url=${encodeURIComponent(urlInput)}`;
-
-            // Reset button after a few seconds just in case redirection takes time
-            setTimeout(() => {
-                btn.innerText = "Initialize Download";
-                btn.disabled = false;
-                status.innerText = "> READY";
-            }, 5000);
         }
     </script>
 </body>
