@@ -19,12 +19,25 @@ app.post('/api/download', async (req, res) => {
     try {
         console.log("Fetching TikTok link via API wrapper:", tiktokUrl);
 
-        // Using a reliable public backend utility endpoint to extract the clean video stream
+        // 1. Get metadata and clean video link from public API
         const response = await axios.get(`https://tikwm.com/api/?url=${encodeURIComponent(tiktokUrl)}`);
         
         if (response.data && response.data.code === 0) {
-            const videoDownloadUrl = response.data.data.play; // Watermark-free MP4 link
-            return res.json({ downloadUrl: videoDownloadUrl });
+            const videoDownloadUrl = response.data.data.play; 
+
+            // 2. Fetch the actual binary video stream from TikTok's CDN
+            const videoStreamResponse = await axios({
+                method: 'GET',
+                url: videoDownloadUrl,
+                responseType: 'stream'
+            });
+
+            // 3. Set headers to force phone browsers to download the file directly
+            res.setHeader('Content-Disposition', 'attachment; filename="tiktok_video.mp4"');
+            res.setHeader('Content-Type', 'video/mp4');
+
+            // 4. Pipe the video file straight to the user
+            videoStreamResponse.data.pipe(res);
         } else {
             return res.status(500).json({ error: 'Could not extract video link from TikTok.' });
         }
