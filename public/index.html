@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Video Downloader</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: #fff; text-align: center; padding-top: 50px; margin: 0; }
+        .container { max-width: 400px; margin: auto; background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; box-sizing: border-box; margin-bottom: 15px; }
+        button { width: 100%; padding: 12px; font-size: 16px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1d4ed8; }
+        #result { margin-top: 20px; word-break: break-all; }
+        .download-btn { display: block; background: #16a34a; color: white; padding: 12px; border-radius: 8px; text-decoration: none; margin-top: 10px; font-weight: bold; }
+        .download-btn:hover { background: #15803d; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>TikTok Downloader</h2>
+        <p style="color: #94a3b8; font-size: 14px;">Paste your TikTok link below</p>
+        
+        <input type="text" id="urlInput" placeholder="https://www.tiktok.com/@...">
+        <button onclick="downloadVideo()">Get Video</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function downloadVideo() {
+            const url = document.getElementById('urlInput').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!url) {
+                alert('Please paste a link first!');
+                return;
+            }
+
+            resultDiv.innerHTML = "<p style='color: #94a3b8;'>Processing...</p>";
+
+            try {
+                // Dynamically uses the current website address
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tiktokUrl: url })
+                });
+                
+                const data = await response.json();
+
+                if (data.downloadUrl) {
+                    resultDiv.innerHTML = `
+                        <a href="${data.downloadUrl}" target="_blank" download="video.mp4" class="download-btn">
+                            Download MP4
+                        </a>
+                    `;
+                } else {
+                    resultDiv.innerHTML = "<p style='color: #ef4444;'>Could not fetch video.</p>";
+                }
+            } catch (error) {
+                resultDiv.innerHTML = "<p style='color: #ef4444;'>Error connecting to server.</p>";
+            }
+        }
+    </script>
+
+</body>
+</html>
