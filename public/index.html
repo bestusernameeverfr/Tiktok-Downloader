@@ -48,9 +48,7 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        button:hover { background: #e0244a; }
         #status { margin-top: 15px; font-size: 14px; color: #aaa; }
     </style>
 </head>
@@ -59,15 +57,14 @@
     <div class="container">
         <h2>TikTok Downloader</h2>
         <input type="text" id="urlInput" placeholder="Paste TikTok Link Here...">
-        <button id="downloadBtn" onclick="downloadVideo()">Get MP4</button>
+        <button onclick="triggerDownload()">Get MP4</button>
         <p id="status"></p>
     </div>
 
     <script>
-        async function downloadVideo() {
+        function triggerDownload() {
             const urlInput = document.getElementById('urlInput').value.trim();
             const status = document.getElementById('status');
-            const btn = document.getElementById('downloadBtn');
 
             if (!urlInput) {
                 status.innerText = "Please paste a link first!";
@@ -75,40 +72,11 @@
                 return;
             }
 
-            status.innerText = "Processing video, please wait...";
-            status.style.color = "#aaa";
-            btn.disabled = true;
+            status.innerText = "Downloading starting shortly...";
+            status.style.color = "#2ecc71";
 
-            try {
-                const response = await fetch('/api/download', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tiktokUrl: urlInput })
-                });
-
-                if (!response.ok) throw new Error('Failed to download video.');
-
-                // Convert response stream into a downloadable file blob
-                const blob = await response.blob();
-                const downloadUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = 'tiktok_video.mp4';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                
-                window.URL.revokeObjectURL(downloadUrl);
-                status.innerText = "Download started!";
-                status.style.color = "#2ecc71";
-            } catch (err) {
-                console.error(err);
-                status.innerText = "Error downloading video. Try again.";
-                status.style.color = "#ff4d4d";
-            } finally {
-                btn.disabled = false;
-            }
+            // Directly navigate Safari to the server route which forces native iOS download prompt
+            window.location.href = `/api/download-get?url=${encodeURIComponent(urlInput)}`;
         }
     </script>
 </body>
