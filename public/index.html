@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Arcade - Downloader</title>
-    <!-- Importing a classic retro pixel font -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>TikTok Fighter II - Turbo Edition</title>
+    <!-- Importing a brutal, heavy arcade game font -->
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -14,57 +14,59 @@
         }
 
         body {
-            background-color: #0d0b1e;
-            /* Retro pixel grid background */
+            /* Classic arcade stage backdrop vibe */
+            background-color: #0b0813;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
+                radial-gradient(circle at center, #221c3b 0%, #0b0813 100%);
             color: #ffffff;
-            font-family: 'Press Start 2P', monospace;
+            font-family: 'Teko', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            overflow: hidden;
         }
 
-        .arcade-cabinet {
-            background: #1b1638;
+        .cabinet {
+            background: linear-gradient(145deg, #181428, #0e0b17);
             border: 4px solid #ffcc00;
-            box-shadow: 0 0 0 4px #0d0b1e, 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.5);
-            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 0 6px #05040a, 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(255, 102, 0, 0.15);
+            padding: 35px 25px;
             width: 100%;
             max-width: 440px;
             text-align: center;
             position: relative;
         }
 
-        /* Top arcade marquee badge */
-        .marquee {
-            background: #ff0055;
-            border: 2px solid #fff;
-            color: #fff;
-            font-size: 10px;
-            padding: 8px;
+        /* Street Fighter style header banner badge */
+        .vs-banner {
+            background: linear-gradient(90deg, #cc0000, #ff4500, #cc0000);
+            border: 2px solid #ffcc00;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 0 #990033;
+            padding: 4px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(204, 0, 0, 0.5);
+            text-shadow: 2px 2px 0px #000;
         }
 
         h1 {
-            font-size: 16px;
-            color: #00ffcc;
-            text-shadow: 3px 3px 0px #ff0055;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .score-text {
-            font-size: 8px;
-            color: #ffcc00;
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, #fff700 0%, #ff6600 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 4px 4px 0px #990000;
             margin-bottom: 25px;
+            font-style: italic;
         }
 
         .input-group {
@@ -74,93 +76,103 @@
 
         label {
             display: block;
-            font-size: 8px;
-            color: #a7a2cb;
-            margin-bottom: 8px;
+            font-size: 20px;
+            color: #ffcc00;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
             text-transform: uppercase;
+            text-shadow: 1px 1px 0px #000;
         }
 
         input {
             width: 100%;
-            background: #0d0b1e;
-            border: 3px solid #5d5396;
+            background: #06050a;
+            border: 3px solid #ff6600;
             color: #00ffcc;
-            padding: 14px;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 9px;
+            padding: 12px 16px;
+            font-family: 'Teko', sans-serif;
+            font-size: 24px;
+            letter-spacing: 1px;
             outline: none;
-            box-shadow: inset 2px 2px 0px #000;
+            border-radius: 4px;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.8);
+            transition: border-color 0.2s;
         }
 
         input:focus {
-            border-color: #00ffcc;
+            border-color: #ffcc00;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.8), 0 0 10px rgba(255, 204, 0, 0.5);
         }
 
         input::placeholder {
-            color: #3b3368;
-            font-size: 8px;
+            color: #3b335c;
         }
 
-        /* Chunky 3D Arcade Button */
+        /* Chunky 3D Arcade Fighter Button */
         button {
             width: 100%;
-            background: #ffcc00;
-            border: none;
-            border-bottom: 6px solid #b38f00;
-            color: #1b1638;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 11px;
-            padding: 16px;
+            background: linear-gradient(180deg, #ff3300 0%, #990000 100%);
+            border: 3px solid #ffcc00;
+            border-bottom: 6px solid #4d0000;
+            color: #ffffff;
+            font-family: 'Teko', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            padding: 10px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 4px 0 #0d0b1e;
+            text-shadow: 2px 2px 0px #000;
+            border-radius: 4px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
             transition: all 0.1s ease;
             margin-top: 10px;
         }
 
         button:hover {
-            background: #ffdd33;
+            background: linear-gradient(180deg, #ff4d22 0%, #b30000 100%);
         }
 
         button:active {
             transform: translateY(4px);
             border-bottom-width: 2px;
-            box-shadow: 0 1px 0 #0d0b1e;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.6);
         }
 
         #status {
             margin-top: 20px;
-            font-size: 8px;
-            color: #ff0055;
-            min-height: 20px;
-            line-height: 1.5;
+            font-size: 22px;
+            color: #00ffcc;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0px #000;
+            min-height: 25px;
         }
 
-        .credits {
-            margin-top: 25px;
-            font-size: 7px;
-            color: #5d5396;
-            letter-spacing: 1px;
+        .footer-tag {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #7a70a6;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-    <div class="arcade-cabinet">
-        <div class="marquee">★ INSERT LINK TO PLAY ★</div>
+    <div class="cabinet">
+        <div class="vs-banner">ROUND 1 &bull; FIGHT!</div>
         
-        <h1>TikTok<br>Downloader</h1>
-        <div class="score-text">HIGH SCORE: 9999</div>
+        <h1>TikTok Downloader</h1>
 
         <div class="input-group">
-            <label>&gt; Paste URL:</label>
-            <input type="text" id="urlInput" placeholder="https://tiktok.com/...">
+            <label>&gt; Enter Link Combo:</label>
+            <input type="text" id="urlInput" placeholder="https://www.tiktok.com/@...">
         </div>
 
-        <button onclick="triggerDownload()">GET MP4</button>
+        <button onclick="triggerDownload()">HADOUKEN! (GET MP4)</button>
         <p id="status"></p>
 
-        <div class="credits">1 PLAYER TOKEN = FREE</div>
+        <div class="footer-tag">&copy; 1991 CAPCOM STYLE UI</div>
     </div>
 
     <script>
@@ -169,12 +181,13 @@
             const status = document.getElementById('status');
 
             if (!urlInput) {
-                status.innerText = "ERROR: NO URL DETECTED!";
+                status.innerText = "PERFECT KO! (URL REQUIRED)";
+                status.style.color = "#ff3300";
                 return;
             }
 
-            status.innerText = "LOADING STAGE... PLEASE WAIT.";
-            status.style.color = "#00ffcc";
+            status.innerText = "BUFFERING SUPER COMBO...";
+            status.style.color = "#ffcc00";
 
             window.location.href = `/api/download-get?url=${encodeURIComponent(urlInput)}`;
         }
